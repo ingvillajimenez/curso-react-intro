@@ -14,7 +14,12 @@ import { useLocalStorage } from "./useLocalStorage";
 // localStorage.removeItem("TODOS_V1");
 
 function App() {
-  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
+  const {
+    item: todos,
+    saveItem: saveTodos,
+    loading,
+    error,
+  } = useLocalStorage("TODOS_V1", []);
   const [searchValue, setsearchValue] = React.useState("");
 
   const completedTodos = todos.filter((todo) => todo.completed).length;
@@ -24,25 +29,6 @@ function App() {
     const searchText = searchValue.toLowerCase();
     return todoText.includes(searchText);
   });
-
-  console.log("Log 1");
-
-  // useEffect(() => {
-  //   console.log("Looooooooooog 2");
-  // });
-  // Se ejecuta al final del primer render y cualquier re-render
-
-  // useEffect(() => {
-  //   console.log("Looooooooooog 2");
-  // }, []);
-  // Se ejecuta al final del primer render y nunca mas
-
-  useEffect(() => {
-    console.log("Looooooooooog 2");
-  }, [totalTodos]);
-  //  Se ejecuta al final del primer render y solo cuando cambie totalTodos
-
-  console.log("Log 3");
 
   const completeTodo = (text) => {
     const newTodos = [...todos];
@@ -62,6 +48,8 @@ function App() {
 
   return (
     <AppUI
+      loading={loading}
+      error={error}
       completedTodos={completedTodos}
       totalTodos={totalTodos}
       searchValue={searchValue}
